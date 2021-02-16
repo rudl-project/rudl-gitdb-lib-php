@@ -7,6 +7,7 @@ namespace Rudl\LibGitDb\Type\Conf;
 class T_SystemConfig
 {
 
+
     /**
      * @var string
      */
