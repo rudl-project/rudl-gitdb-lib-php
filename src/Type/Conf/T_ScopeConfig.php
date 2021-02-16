@@ -10,7 +10,7 @@ class T_ScopeConfig
     /**
      * @var string
      */
-    public $scope;
+    public $name;
 
     /**
      * @var string[]
