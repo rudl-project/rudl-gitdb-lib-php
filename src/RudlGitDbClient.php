@@ -12,15 +12,16 @@ class RudlGitDbClient
 
     public function __construct(
         private string $endpointUrl,
-        private string $systemId,
-        private string $accessKey
+        private ?string $systemId = null,
+        private ?string $accessKey = null
     ){}
 
 
     protected function getRequestUri(string $scope)
     {
         $uri = new Uri($this->endpointUrl);
-        $uri = $uri->withUserInfo($this->systemId, $this->accessKey);
+        if ($this->systemId !== null && $this->accessKey !== null)
+            $uri = $uri->withUserInfo($this->systemId, $this->accessKey);
         $uri = $uri->withPath($scope);
         return $uri;
     }
