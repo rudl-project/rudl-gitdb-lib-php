@@ -26,4 +26,12 @@ class T_Object
      * @var int
      */
     public $lastChangeTs = null;
+
+
+    public function __construct(string $name, string $content, bool $encrypted = false)
+    {
+        $this->name = $name;
+        $this->content = $content;
+        $this->encrypted = $encrypted;
+    }
 }

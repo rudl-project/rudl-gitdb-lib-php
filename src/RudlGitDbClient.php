@@ -43,7 +43,9 @@ class RudlGitDbClient
     public function writeObjects(string $scope, T_ObjectList $objectList, string $commitMessage = "")
     {
 
-        phore_http_request($this->getRequestUri(["o", $scope]))->withJsonBody($objectList)->send()->getBodyJson();
+        phore_http_request($this->getRequestUri(["o", $scope]))
+            ->withJsonBody($objectList)
+            ->send()->getBodyJson();
     }
 
 }
