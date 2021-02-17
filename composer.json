@@ -13,7 +13,8 @@
     ],
     "require": {
         "php": ">=8.0",
-        "phore/http-client": "*"
+        "phore/http-client": "*",
+        "phore/hydrator": "*"
     },
 
     "require-dev": {

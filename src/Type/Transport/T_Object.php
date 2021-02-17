@@ -4,13 +4,13 @@
 namespace Rudl\LibGitDb\Type\Transport;
 
 
-class T_File
+class T_Object
 {
 
     /**
      * @var string
      */
-    public $filename;
+    public $name;
 
     /**
      * @var bool

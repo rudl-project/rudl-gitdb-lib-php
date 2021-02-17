@@ -6,6 +6,7 @@ namespace Rudl\LibGitDb;
 
 use Laminas\Diactoros\Uri;
 use Rudl\LibGitDb\Type\Transport\T_FileList;
+use Rudl\LibGitDb\Type\Transport\T_ObjectList;
 
 class RudlGitDbClient
 {
@@ -26,7 +27,7 @@ class RudlGitDbClient
         return $uri;
     }
 
-    public function listObjects(string $scope) : T_FileList
+    public function listObjects(string $scope) : T_ObjectList
     {
         return phore_hydrate(
             phore_http_request($this->getRequestUri($scope))->send()->getBodyJson(),
@@ -34,7 +35,7 @@ class RudlGitDbClient
         );
     }
 
-    public function writeObjects(string $scope, T_FileList $fileList, string $commitMessage = "")
+    public function writeObjects(string $scope, T_ObjectList $fileList, string $commitMessage = "")
     {
         phore_http_request($this->getRequestUri($scope))->withJsonBody($fileList)->send()->getBodyJson();
     }

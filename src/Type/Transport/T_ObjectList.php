@@ -8,14 +8,17 @@ class T_ObjectList
 {
 
     /**
-     * @var T_File[]
+     * @var T_Object[]
      */
-    public $files = [];
+    public $objects = [];
 
-    public function __construct(array $files = [])
+    /**
+     * T_ObjectList constructor.
+     * @param T_Object[] $objects
+     */
+    public function __construct(array $objects = [])
     {
-        // Requird to separate constructor from Property definition for hydrator
-        $this->files = $files;
+        $this->objects = $objects;
     }
 
 
