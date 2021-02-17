@@ -18,26 +18,32 @@ class RudlGitDbClient
     ){}
 
 
-    protected function getRequestUri(string $scope)
+    protected function getRequestUri(array $path) : string
     {
-        $uri = new Uri($this->endpointUrl);
-        if ($this->systemId !== null && $this->accessKey !== null)
-            $uri = $uri->withUserInfo($this->systemId, $this->accessKey);
-        $uri = $uri->withPath($scope);
-        return $uri;
+        $path = array_filter($path, fn($in) => urlencode($in));
+        if ( ! str_ends_with($this->endpointUrl, "/"))
+            $this->endpointUrl .= "/";
+
+        $url = phore_url($this->endpointUrl . implode("/", $path));
+
+        if ($this->systemId !== null && $this->accessKey !== null) {
+            $url = $url->withUser($this->systemId)->withPass( $this->accessKey);
+        }
+        return $url;
     }
 
     public function listObjects(string $scope) : T_ObjectList
     {
         return phore_hydrate(
-            phore_http_request($this->getRequestUri($scope))->send()->getBodyJson(),
+            phore_http_request($this->getRequestUri(["o", $scope]))->send()->getBodyJson(),
             T_FileList::class
         );
     }
 
-    public function writeObjects(string $scope, T_ObjectList $fileList, string $commitMessage = "")
+    public function writeObjects(string $scope, T_ObjectList $objectList, string $commitMessage = "")
     {
-        phore_http_request($this->getRequestUri($scope))->withJsonBody($fileList)->send()->getBodyJson();
+
+        phore_http_request($this->getRequestUri(["o", $scope]))->withJsonBody($objectList)->send()->getBodyJson();
     }
 
 }
