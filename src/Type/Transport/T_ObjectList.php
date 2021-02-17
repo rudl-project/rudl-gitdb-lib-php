@@ -4,7 +4,7 @@
 namespace Rudl\LibGitDb\Type\Transport;
 
 
-class T_FileList
+class T_ObjectList
 {
 
     /**
