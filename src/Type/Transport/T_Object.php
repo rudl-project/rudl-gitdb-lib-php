@@ -28,7 +28,7 @@ class T_Object
     public $lastChangeTs = null;
 
 
-    public function __construct(string $name, string $content, bool $encrypted = false)
+    public function __construct(string $name = null, string $content = null, bool $encrypted = false)
     {
         $this->name = $name;
         $this->content = $content;
