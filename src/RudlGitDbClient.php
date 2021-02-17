@@ -44,7 +44,7 @@ class RudlGitDbClient
     {
 
         phore_http_request($this->getRequestUri(["o", $scope]))
-            ->withJsonBody($objectList)
+            ->withJsonBody((array)$objectList)
             ->send()->getBodyJson();
     }
 
