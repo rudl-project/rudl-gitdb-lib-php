@@ -8,7 +8,7 @@ class T_FileList
 {
 
     /**
-     * @var T_File
+     * @var T_File[]
      */
     public $files = [];
 
