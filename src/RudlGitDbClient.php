@@ -24,6 +24,8 @@ class RudlGitDbClient
         if ( ! str_ends_with($this->endpointUrl, "/"))
             $this->endpointUrl .= "/";
 
+        $this->endpointUrl .= "api/";
+
         $url = phore_url($this->endpointUrl . implode("/", $path));
 
         if ($this->systemId !== null && $this->accessKey !== null) {
