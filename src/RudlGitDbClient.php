@@ -38,7 +38,7 @@ class RudlGitDbClient
     {
         return phore_hydrate(
             phore_http_request($this->getRequestUri(["o", $scope]))->send()->getBodyJson(),
-            T_FileList::class
+            T_ObjectList::class
         );
     }
 
