@@ -13,9 +13,11 @@ class T_Cert
     public $name;
 
     /**
+     * Common Names (CN) Array
+     *
      * @var string[]
      */
-    public $hosts = [];
+    public $common_names = [];
 
     /**
      * @var bool

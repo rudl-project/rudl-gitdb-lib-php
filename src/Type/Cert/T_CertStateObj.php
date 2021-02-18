@@ -8,7 +8,7 @@ class T_CertStateObj
 {
 
     /**
-     * @var T_CertState[*]
+     * @var T_CertState[]
      */
     public $state = [];
 
