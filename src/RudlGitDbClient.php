@@ -34,6 +34,11 @@ class RudlGitDbClient
         return $url;
     }
 
+    public function getRevision() : string
+    {
+        return phore_http_request($this->getRequestUri(["revision"]))->send()->getBody();
+    }
+
     public function listObjects(string $scope) : T_ObjectList
     {
         return phore_hydrate(
@@ -48,7 +53,6 @@ class RudlGitDbClient
         $result = phore_http_request($this->getRequestUri(["o", $scope]))
             ->withJsonBody((array)$objectList)
             ->send()->getBodyJson();
-        print_r ($result);
     }
 
 }

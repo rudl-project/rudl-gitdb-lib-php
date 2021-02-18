@@ -13,6 +13,13 @@ class T_ObjectList
     public $objects = [];
 
     /**
+     * The current Revision
+     * 
+     * @var string 
+     */
+    public $rev = "";
+    
+    /**
      * T_ObjectList constructor.
      * @param T_Object[] $objects
      */
