@@ -4,7 +4,7 @@
 namespace Rudl\LibGitDb\Type\Cert;
 
 
-class T_CertReqDef
+class T_Cert
 {
 
     /**

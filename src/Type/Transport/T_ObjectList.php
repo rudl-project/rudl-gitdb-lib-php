@@ -29,5 +29,14 @@ class T_ObjectList
     }
 
 
+    public function getObject(string $name) : ?T_Object
+    {
+        foreach ($this->objects as $object) {
+            if ($object->name === $name)
+                return $object;
+        }
+        return null;
+    }
+
 
 }
