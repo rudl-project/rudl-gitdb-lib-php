@@ -13,7 +13,7 @@ class T_IngressConfig_Location
     public $location;
 
     /**
-     * @var string[]
+     * @var string
      */
     public $proxy_pass;
 
