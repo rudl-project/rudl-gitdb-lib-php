@@ -15,17 +15,17 @@ class RudlGitDbClient
         private string $endpointUrl,
         private ?string $systemId = null,
         private ?string $accessKey = null
-    ){}
+    ){
+        if ( ! str_ends_with($this->endpointUrl, "/"))
+            $this->endpointUrl .= "/";
+
+        $this->endpointUrl .= "api/";
+    }
 
 
     protected function getRequestUri(array $path) : string
     {
         $path = array_filter($path, fn($in) => urlencode($in));
-        if ( ! str_ends_with($this->endpointUrl, "/"))
-            $this->endpointUrl .= "/";
-
-        $this->endpointUrl .= "api/";
-
         $url = phore_url($this->endpointUrl . implode("/", $path));
 
         if ($this->systemId !== null && $this->accessKey !== null) {
