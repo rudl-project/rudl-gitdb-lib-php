@@ -47,6 +47,39 @@ class RudlGitDbClient
         );
     }
 
+    /**
+     * Create object files in targetPath
+     *
+     * @param string $scope
+     * @param string $path
+     * @throws \Phore\FileSystem\Exception\FilesystemException
+     */
+    public function syncObjects(string $scope, string $targetPath)
+    {
+        $target = phore_dir($targetPath);
+
+        foreach ($this->listObjects($scope)->objects as $object) {
+            $target->withFileName($object->name)->set_contents($object->content);
+        }
+
+    }
+
+    public function logOk($message)
+    {
+
+    }
+
+    public function logWarning($message)
+    {
+
+    }
+
+    public function logError($message)
+    {
+
+    }
+
+
     public function writeObjects(string $scope, T_ObjectList $objectList, string $commitMessage = "", bool $simulate = false)
     {
         $url = $this->getRequestUri(["o", $scope]);
