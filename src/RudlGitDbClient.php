@@ -14,12 +14,25 @@ use Rudl\LibGitDb\Type\Transport\T_ObjectList;
 class RudlGitDbClient
 {
 
-    public function __construct(
-        private ?string $endpointUrl = null,
-        private ?string $clientId = null,
-        private ?string $clientSecret = null
-    ){
+    private string $endpointUrl;
+    private string $clientId;
+    private string $clientSecret;
 
+    public function __construct(string $endpointUrl = null)
+    {
+
+    }
+
+    /**
+     * Use for development only. Use loadClientConfigFromEnv for production
+     *
+     * @param $endpointUrl
+     */
+    public function setEndpointDev($endpointUrl)
+    {
+        $this->endpointUrl = parse_url($endpointUrl, PHP_URL_SCHEME) . parse_url($endpointUrl, PHP_URL_HOST);
+        $this->clientId = parse_url($endpointUrl, PHP_URL_USER);
+        $this->clientSecret = parse_url($endpointUrl, PHP_URL_PASS);
     }
 
     public function loadClientConfigFromEnv()
@@ -67,7 +80,7 @@ class RudlGitDbClient
             $secret = file_get_contents($loadFile);
         }
         if (strlen($secret) < 8) {
-            throw new \InvalidArgumentException("Secret defined in 'RUDL_GITDB_CLIENT_SECRET' length is " . strlen($secret). ". Minimul length is 8 bytes.");
+            throw new \InvalidArgumentException("Secret defined in 'RUDL_GITDB_CLIENT_SECRET' length is " . strlen($secret). ". Minimum length is 8 bytes.");
         }
         $this->clientSecret = $secret;
 
