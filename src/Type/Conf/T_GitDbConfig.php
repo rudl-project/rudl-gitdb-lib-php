@@ -13,9 +13,9 @@ class T_GitDbConfig
     public $version;
 
     /**
-     * @var T_SystemConfig[]
+     * @var T_ClientConfig[]
      */
-    public $systems = [];
+    public $clients = [];
 
     /**
      * @var T_ScopeConfig[]

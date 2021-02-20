@@ -15,9 +15,9 @@ class RudlGitDbClient
 {
 
     public function __construct(
-        private ?string $endpointUrl = null,
-        private ?string $systemId = null,
-        private ?string $accessKey = null
+        private string $endpointUrl = null,
+        private ?string $clientId = null,
+        private ?string $clientSecret = null
     ){
         if ( ! str_ends_with($this->endpointUrl, "/"))
             $this->endpointUrl .= "/";
@@ -25,7 +25,7 @@ class RudlGitDbClient
         $this->endpointUrl .= "api/";
     }
 
-    public function loadSystemConfigFromEnv()
+    public function loadClientConfigFromEnv()
     {
         $endpointUrl = getenv("RUDL_GITDB_URL");
         if ($endpointUrl === false || $endpointUrl === "")
@@ -38,8 +38,8 @@ class RudlGitDbClient
             if ($scheme !== "https")
                 throw new \InvalidArgumentException("Secure (SSL) connection is required for non local hosts (RUDL_GIT_URL): '$endpointUrl'");
         }
-        $this->systemId = getenv("RUDL_GITDB_CLIENT_ID");
-        if ($this->systemId === false || $this->systemId === "")
+        $this->clientId = getenv("RUDL_GITDB_CLIENT_ID");
+        if ($this->clientId === false || $this->clientId === "")
             throw new \InvalidArgumentException("Required ENV 'RUDL_GITDB_CLIENT_ID' undefined.");
 
         $secret = getenv("RUDL_GITDB_CLIENT_SECRET");
@@ -54,7 +54,7 @@ class RudlGitDbClient
         if (strlen($secret) < 8) {
             throw new \InvalidArgumentException("Secret defined in 'RUDL_GITDB_CLIENT_SECRET' length is " . strlen($secret). ". Minimul length is 8 bytes.");
         }
-        $this->accessKey = $secret;
+        $this->clientSecret = $secret;
 
     }
 
@@ -83,7 +83,7 @@ class RudlGitDbClient
     {
         try {
             return phore_http_request($this->getRequestUri(["revision"]))
-                ->withBasicAuth($this->systemId, $this->accessKey)
+                ->withBasicAuth($this->clientId, $this->clientSecret)
                 ->send()->getBody();
         } catch (\Exception $e) {
             $this->handleError($e);
@@ -96,7 +96,7 @@ class RudlGitDbClient
         try {
             return phore_hydrate(
                 phore_http_request($this->getRequestUri(["o", $scope]))
-                    ->withBasicAuth($this->systemId, $this->accessKey)
+                    ->withBasicAuth($this->clientId, $this->clientSecret)
                     ->send()->getBodyJson(),
                 T_ObjectList::class
             );
@@ -150,7 +150,7 @@ class RudlGitDbClient
         
         try {
             $result = phore_http_request($url)
-                ->withBasicAuth($this->systemId, $this->accessKey)
+                ->withBasicAuth($this->clientId, $this->clientSecret)
                 ->withJsonBody((array)$objectList)
                 ->send()->getBodyJson();
         } catch (\Exception $e) {
