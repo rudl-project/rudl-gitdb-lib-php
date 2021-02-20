@@ -24,7 +24,11 @@ class RudlGitDbClient
 
     public function loadClientConfigFromEnv()
     {
-        $endpointUrl = getenv("RUDL_GITDB_URL");
+        if (defined("RUDL_GITDB_URL")) {
+            $endpointUrl = constant("RUDL_GITDB_URL");
+        } else {
+            $endpointUrl = getenv("RUDL_GITDB_URL");
+        }
         if ($endpointUrl === false || $endpointUrl === "")
             throw new \InvalidArgumentException("Required ENV 'RUDL_GITDB_URL' undefined.");
         $host = parse_url($endpointUrl, PHP_URL_HOST);
@@ -40,11 +44,20 @@ class RudlGitDbClient
         $endpointUrl .= "api/";
         $this->endpointUrl = $endpointUrl;
 
-        $this->clientId = getenv("RUDL_GITDB_CLIENT_ID");
+        
+        if (defined("RUDL_GITDB_CLIENT_ID")) {
+            $this->clientId = constant("RUDL_GITDB_CLIENT_ID");
+        } else {
+            $this->clientId = getenv("RUDL_GITDB_CLIENT_ID");
+        }
         if ($this->clientId === false || $this->clientId === "")
             throw new \InvalidArgumentException("Required ENV 'RUDL_GITDB_CLIENT_ID' undefined.");
 
-        $secret = getenv("RUDL_GITDB_CLIENT_SECRET");
+        if (defined("RUDL_GITDB_CLIENT_SECRET")) {
+            $secret = constant("RUDL_GITDB_CLIENT_SECRET");
+        } else {
+            $secret = getenv("RUDL_GITDB_CLIENT_SECRET");
+        }
         if ($secret === false || $secret === "")
             throw new \InvalidArgumentException("Required ENV 'RUDL_GITDB_CLIENT_SECRET' undefined.");
         if (preg_match("|^file:(.*)$|", $secret, $matches)) {
