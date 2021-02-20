@@ -15,14 +15,11 @@ class RudlGitDbClient
 {
 
     public function __construct(
-        private string $endpointUrl = null,
+        private ?string $endpointUrl = null,
         private ?string $clientId = null,
         private ?string $clientSecret = null
     ){
-        if ( ! str_ends_with($this->endpointUrl, "/"))
-            $this->endpointUrl .= "/";
 
-        $this->endpointUrl .= "api/";
     }
 
     public function loadClientConfigFromEnv()
@@ -38,6 +35,11 @@ class RudlGitDbClient
             if ($scheme !== "https")
                 throw new \InvalidArgumentException("Secure (SSL) connection is required for non local hosts (RUDL_GIT_URL): '$endpointUrl'");
         }
+        if ( ! str_ends_with($endpointUrl, "/"))
+            $endpointUrl .= "/";
+        $endpointUrl .= "api/";
+        $this->endpointUrl = $endpointUrl;
+
         $this->clientId = getenv("RUDL_GITDB_CLIENT_ID");
         if ($this->clientId === false || $this->clientId === "")
             throw new \InvalidArgumentException("Required ENV 'RUDL_GITDB_CLIENT_ID' undefined.");
