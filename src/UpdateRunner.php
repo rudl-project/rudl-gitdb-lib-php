@@ -31,6 +31,8 @@ class UpdateRunner
             if ($this->errorCount > 0) {
                 echo "[" . date ("Y-m-D H:i:s") . "] Recovered from previous error after " . ($this->errorCount * self::ON_ERROR_SLEEP_TIME) . " seconds System ok.\n";
             }
+            echo "[" . date ("Y-m-D H:i:s") . "] Update successful\n";
+
             $this->errorCount = 0;
             $this->currentRevison = $nextRev;
         } catch (\Exception|\Error $ex) {
