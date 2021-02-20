@@ -4,7 +4,7 @@
 namespace Rudl\LibGitDb\Type\Conf;
 
 
-class T_SystemConfig
+class T_ClientConfig
 {
 
 
