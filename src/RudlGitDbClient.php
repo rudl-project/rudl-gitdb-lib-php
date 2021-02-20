@@ -30,7 +30,11 @@ class RudlGitDbClient
      */
     public function setEndpointDev($endpointUrl)
     {
-        $this->endpointUrl = parse_url($endpointUrl, PHP_URL_SCHEME) . parse_url($endpointUrl, PHP_URL_HOST);
+        $this->endpointUrl = parse_url($endpointUrl, PHP_URL_SCHEME) . "://" . parse_url($endpointUrl, PHP_URL_HOST);
+        if ( ! str_ends_with($this->endpointUrl, "/"))
+            $this->endpointUrl .= "/";
+        $this->endpointUrl .= "api/";
+
         $this->clientId = parse_url($endpointUrl, PHP_URL_USER);
         $this->clientSecret = parse_url($endpointUrl, PHP_URL_PASS);
     }
