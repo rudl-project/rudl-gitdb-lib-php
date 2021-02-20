@@ -15,7 +15,7 @@ class RudlGitDbClient
 {
 
     public function __construct(
-        private string $endpointUrl,
+        private ?string $endpointUrl = null,
         private ?string $systemId = null,
         private ?string $accessKey = null
     ){
