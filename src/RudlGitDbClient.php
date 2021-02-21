@@ -81,7 +81,7 @@ class RudlGitDbClient
             $loadFile = $matches[1];
             if ( ! is_file($loadFile) || ! is_readable($loadFile))
                 throw new \InvalidArgumentException("Secret file specified in RUDL_GITDB_CLIENT_SECRET is not readable: '$loadFile'");
-            $secret = file_get_contents($loadFile);
+            $secret = trim (file_get_contents($loadFile));
         }
         if (strlen($secret) < 8) {
             throw new \InvalidArgumentException("Secret defined in 'RUDL_GITDB_CLIENT_SECRET' length is " . strlen($secret). ". Minimum length is 8 bytes.");
