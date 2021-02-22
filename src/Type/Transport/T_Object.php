@@ -48,7 +48,7 @@ class T_Object
                 throw new \InvalidArgumentException("Unrecoginized extension '$extension' for dehydration");
             }
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException("dehydrate error in object '$this->name': " . $e->getMessage(), $e);
+            throw new \InvalidArgumentException("dehydrate error in object '$this->name': " . $e->getMessage(), 10, $e);
         }
         return $this;
     }
@@ -66,7 +66,7 @@ class T_Object
             }
             return phore_hydrate($data, $class);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException("hydrate error in object '$this->name': " . $e->getMessage(), $e);
+            throw new \InvalidArgumentException("hydrate error in object '$this->name': " . $e->getMessage(), 11, $e);
         }
     }
 
