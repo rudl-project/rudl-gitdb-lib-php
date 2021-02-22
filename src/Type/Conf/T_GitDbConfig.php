@@ -22,4 +22,14 @@ class T_GitDbConfig
      */
     public $scopes = [];
 
+    /**
+     * @var string[]
+     */
+    public $repo_hook_keys = [];
+
+    /**
+     * @var string[]
+     */
+    public $trigger_hook_keys = [];
+
 }
