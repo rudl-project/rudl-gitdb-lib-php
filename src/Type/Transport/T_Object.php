@@ -36,7 +36,7 @@ class T_Object
     }
 
 
-    public function dehydrate($content) : void
+    public function dehydrate($content) : self
     {
         $extension = pathinfo($this->name, PATHINFO_EXTENSION);
         try {
@@ -50,6 +50,7 @@ class T_Object
         } catch (\Exception $e) {
             throw new \InvalidArgumentException("dehydrate error in object '$this->name': " . $e->getMessage(), $e);
         }
+        return $this;
     }
 
     public function hydrate(string $class) : mixed
