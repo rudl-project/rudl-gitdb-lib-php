@@ -147,7 +147,7 @@ class RudlGitDbClient
      */
     public function syncObjects(string $scope, string $targetPath)
     {
-        $target = phore_dir($targetPath);
+        $target = phore_dir($targetPath)->mkdir(0755);
 
         try {
             foreach ($this->listObjects($scope)->objects as $object) {

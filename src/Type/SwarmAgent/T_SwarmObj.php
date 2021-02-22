@@ -12,7 +12,7 @@ class T_SwarmObj
     public $stacks;
 
     /**
-     * @var T_SwarmObj_Login[]
+     * @var T_SwarmObj_Login[]|null
      */
-    public $logins;
+    public $logins = null;
 }
