@@ -43,7 +43,7 @@ class T_Object
             if (in_array($extension, ["yml", "yaml"])) {
                 $this->content = phore_yaml_encode($content);
             } else if ($extension === "json") {
-                $this->content = phore_json_encode($content);
+                $this->content = phore_json_pretty_print(phore_json_encode($content));
             } else {
                 throw new \InvalidArgumentException("Unrecoginized extension '$extension' for dehydration");
             }
