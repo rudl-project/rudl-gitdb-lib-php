@@ -145,14 +145,16 @@ class RudlGitDbClient
      * @param string $path
      * @throws \Phore\FileSystem\Exception\FilesystemException
      */
-    public function syncObjects(string $scope, string $targetPath)
+    public function syncObjects(string $scope, string $targetPath) : T_ObjectList
     {
         $target = phore_dir($targetPath)->mkdir(0755);
 
         try {
-            foreach ($this->listObjects($scope)->objects as $object) {
+            $objectList = $this->listObjects($scope);
+            foreach ($objectList->objects as $object) {
                 $target->withFileName($object->name)->set_contents($object->content);
             }
+            return $objectList;
         } catch (\Exception $e) {
             $this->handleError($e);
         }
