@@ -170,7 +170,7 @@ class RudlGitDbClient
                 ->withJsonBody((array)$log)
                 ->send()->getBodyJson();
         } catch (\Exception $e) {
-            echo "Unable to send log message!";
+            echo "Unable to send log message: " . $e->getMessage();
         }
     }
 
