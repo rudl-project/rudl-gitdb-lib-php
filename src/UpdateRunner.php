@@ -35,12 +35,13 @@ class UpdateRunner
 
             $this->errorCount = 0;
             $this->currentRevison = $nextRev;
+            $this->gitDbClient->logOk("Update successful (Rev: $this->currentRevison)");
         } catch (\Exception|\Error $ex) {
             $this->gitDbClient->logError("Exception: " . $ex->getMessage());
             $this->errorCount++;
             echo "[" . date ("Y-m-D H:i:s") . "] Error: " . $ex->getMessage() . "\n";
         }
-        $this->gitDbClient->logOk("Update successful (Rev: $this->currentRevison)");
+
         sleep ($this->defaultSleepTime);
         sleep (self::ON_ERROR_SLEEP_TIME * $this->errorCount);
     }
