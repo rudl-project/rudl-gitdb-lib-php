@@ -40,6 +40,7 @@ class UpdateRunner
             $this->errorCount++;
             echo "[" . date ("Y-m-D H:i:s") . "] Error: " . $ex->getMessage() . "\n";
         }
+        $this->gitDbClient->logOk("Update successful (Rev: $this->currentRevison)");
         sleep ($this->defaultSleepTime);
         sleep (self::ON_ERROR_SLEEP_TIME * $this->errorCount);
     }
