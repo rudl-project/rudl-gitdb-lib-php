@@ -9,6 +9,7 @@ use Phore\HttpClient\Ex\PhoreHttpRequestException;
 use Rudl\LibGitDb\Ex\AccessDeniedException;
 use Rudl\LibGitDb\Ex\GeneralAccessException;
 use Rudl\LibGitDb\Type\Transport\T_FileList;
+use Rudl\LibGitDb\Type\Transport\T_Log;
 use Rudl\LibGitDb\Type\Transport\T_ObjectList;
 
 class RudlGitDbClient
@@ -160,19 +161,33 @@ class RudlGitDbClient
         }
     }
 
+    public function log(T_Log $log)
+    {
+        $url = $this->getRequestUri(["log"]);
+        try {
+            phore_http_request($url)
+                ->withBasicAuth($this->clientId, $this->clientSecret)
+                ->withJsonBody((array)$log)
+                ->send()->getBodyJson();
+        } catch (\Exception $e) {
+            echo "Unable to send log message!";
+            throw $e;
+        }
+    }
+
     public function logOk($message)
     {
-
+        $this->log(new T_Log("success", $message));
     }
 
     public function logWarning($message)
     {
-
+        $this->log(new T_Log("warning", $message));
     }
 
     public function logError($message)
     {
-
+        $this->log(new T_Log("error", $message));
     }
 
 
