@@ -162,6 +162,8 @@ class RudlGitDbClient
             foreach ($objectList->objects as $object) {
                 $curFile = $target->withFileName($object->name);
                 if ( ! $curFile->exists() || $curFile->get_contents() !== $object->content) {
+                    if ( ! $curFile->getDirname()->exists())
+                        $curFile->getDirname()->assertDirectory(true);
                     $curFile->set_contents($object->content);
                     $changedObjects[] = $object;
                 }
