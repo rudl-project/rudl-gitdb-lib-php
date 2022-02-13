@@ -36,9 +36,9 @@ class UpdateRunner
             $this->errorCount = 0;
             $this->currentRevison = $nextRev;
         } catch (\Exception|\Error $ex) {
+            echo "[" . date ("Y-m-D H:i:s") . "] Error: " . $ex->getMessage() . "\n";
             $this->gitDbClient->logError("Exception: " . $ex->getMessage());
             $this->errorCount++;
-            echo "[" . date ("Y-m-D H:i:s") . "] Error: " . $ex->getMessage() . "\n";
         }
         sleep ($this->defaultSleepTime);
         sleep (self::ON_ERROR_SLEEP_TIME * $this->errorCount);

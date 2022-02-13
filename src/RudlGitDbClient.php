@@ -141,21 +141,31 @@ class RudlGitDbClient
     /**
      * Create object files in targetPath
      *
+     * Returns true if files changed
+     * 
      * @param string $scope
      * @param string $path
      * @throws \Phore\FileSystem\Exception\FilesystemException
+     * @return bool
      */
-    public function syncObjects(string $scope, string $targetPath)
+    public function syncObjects(string $scope, string $targetPath) : bool
     {
         $target = phore_dir($targetPath);
 
+        $changed = false;
+
         try {
             foreach ($this->listObjects($scope)->objects as $object) {
-                $target->withFileName($object->name)->set_contents($object->content);
+                $curFile = $target->withFileName($object->name);
+                if ($curFile->get_contents() !== $object->content) {
+                    $curFile->set_contents($object->content);
+                    $changed = true;
+                }
             }
         } catch (\Exception $e) {
             $this->handleError($e);
         }
+        return $changed;
     }
 
     public function logOk($message)
