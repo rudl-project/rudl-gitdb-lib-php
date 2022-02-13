@@ -19,12 +19,16 @@ class UpdateRunner
         private int $defaultSleepTime = 5
     ) {}
 
-    public function runSingle(callable $fn)
+    public function runSingle(callable $fn, int $autoRunAfter = -1)
     {
         $this->runCount++;
         try {
             while(($nextRev = $this->gitDbClient->getRevision()) === $this->currentRevison) {
                 sleep($this->defaultSleepTime);
+                if ($autoRunAfter === 0) {
+                    break;
+                }
+                $autoRunAfter--;
             }
             echo "[" . date ("Y-m-D H:i:s") . "] New revision $this->currentRevison -> $nextRev. Triggering update...\n";
             $fn($this);
@@ -46,10 +50,10 @@ class UpdateRunner
         sleep (self::ON_ERROR_SLEEP_TIME * $this->errorCount);
     }
 
-    public function run(callable $fn)
+    public function run(callable $fn, int $autoRunAfter = -1)
     {
         while (true) {
-            $this->runSingle($fn);
+            $this->runSingle($fn, $autoRunAfter);
         }
     }
 
