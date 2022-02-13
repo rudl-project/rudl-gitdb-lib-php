@@ -150,7 +150,7 @@ class RudlGitDbClient
      * @return bool
      */
 
-    public function syncObjects(string $scope, string $targetPath, &$changedObjects) : T_ObjectList
+    public function syncObjects(string $scope, string $targetPath, array &$changedObjects=[]) : T_ObjectList
     {
         $target = phore_dir($targetPath)->mkdir(0755);
 
