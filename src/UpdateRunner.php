@@ -8,6 +8,8 @@ class UpdateRunner
 {
     const ON_ERROR_SLEEP_TIME = 10;
 
+    const ON_ERROR_MAX_SLEEP_TIME = 60;
+    
     private $errorCount = 0;
 
     private $runCount = 0;
@@ -47,7 +49,12 @@ class UpdateRunner
         }
 
         sleep ($this->defaultSleepTime);
-        sleep (self::ON_ERROR_SLEEP_TIME * $this->errorCount);
+        
+        $errorSleep = self::ON_ERROR_SLEEP_TIME * $this->errorCount;
+        if ($errorSleep > self::ON_ERROR_MAX_SLEEP_TIME)
+            $errorSleep = self::ON_ERROR_MAX_SLEEP_TIME;
+        
+        sleep ($errorSleep);
     }
 
     public function run(callable $fn, int $autoRunAfter = -1)
