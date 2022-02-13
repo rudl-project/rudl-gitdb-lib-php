@@ -161,7 +161,7 @@ class RudlGitDbClient
             $objectList = $this->listObjects($scope);
             foreach ($objectList->objects as $object) {
                 $curFile = $target->withFileName($object->name);
-                if ($curFile->get_contents() !== $object->content) {
+                if ( ! $curFile->exists() || $curFile->get_contents() !== $object->content) {
                     $curFile->set_contents($object->content);
                     $changedObjects[] = $object;
                 }
