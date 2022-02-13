@@ -9,6 +9,7 @@ use Phore\HttpClient\Ex\PhoreHttpRequestException;
 use Rudl\LibGitDb\Ex\AccessDeniedException;
 use Rudl\LibGitDb\Ex\GeneralAccessException;
 use Rudl\LibGitDb\Type\Transport\T_FileList;
+use Rudl\LibGitDb\Type\Transport\T_Log;
 use Rudl\LibGitDb\Type\Transport\T_ObjectList;
 
 class RudlGitDbClient
@@ -81,7 +82,7 @@ class RudlGitDbClient
             $loadFile = $matches[1];
             if ( ! is_file($loadFile) || ! is_readable($loadFile))
                 throw new \InvalidArgumentException("Secret file specified in RUDL_GITDB_CLIENT_SECRET is not readable: '$loadFile'");
-            $secret = file_get_contents($loadFile);
+            $secret = trim (file_get_contents($loadFile));
         }
         if (strlen($secret) < 8) {
             throw new \InvalidArgumentException("Secret defined in 'RUDL_GITDB_CLIENT_SECRET' length is " . strlen($secret). ". Minimum length is 8 bytes.");
@@ -148,39 +149,56 @@ class RudlGitDbClient
      * @throws \Phore\FileSystem\Exception\FilesystemException
      * @return bool
      */
-    public function syncObjects(string $scope, string $targetPath) : bool
-    {
-        $target = phore_dir($targetPath);
 
-        $changed = false;
+    public function syncObjects(string $scope, string $targetPath, &$changedObjects) : T_ObjectList
+    {
+        $target = phore_dir($targetPath)->mkdir(0755);
+
+        $changedObjects = [];
 
         try {
-            foreach ($this->listObjects($scope)->objects as $object) {
+
+            $objectList = $this->listObjects($scope);
+            foreach ($objectList->objects as $object) {
                 $curFile = $target->withFileName($object->name);
                 if ($curFile->get_contents() !== $object->content) {
                     $curFile->set_contents($object->content);
-                    $changed = true;
+                    $changedObjects[] = $object;
                 }
             }
+            return $objectList;
         } catch (\Exception $e) {
             $this->handleError($e);
         }
-        return $changed;
+
+    }
+
+    public function log(T_Log $log)
+    {
+        $url = $this->getRequestUri(["log"]);
+        try {
+            phore_http_request($url)
+                ->withBasicAuth($this->clientId, $this->clientSecret)
+                ->withJsonBody((array)$log)
+                ->send()->getBodyJson();
+        } catch (\Exception $e) {
+            echo "Unable to send log message: " . $e->getMessage();
+        }
     }
 
     public function logOk($message)
     {
-
+        $this->log(new T_Log("success", $message));
     }
 
     public function logWarning($message)
     {
-
+        $this->log(new T_Log("warning", $message));
     }
 
     public function logError($message)
     {
-
+        $this->log(new T_Log("error", $message));
     }
 
 
